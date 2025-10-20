@@ -1,5 +1,6 @@
 import "./globals.css";
 import QueryProvider from "./QueryProvider";
+import Footer from "./components/Footer";
 
 export const metadata = {
   title: "Pokedex - Simple",
@@ -20,9 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="container">{children}</main>
         </QueryProvider>
 
-        <footer className="footer">
-          <div className="container">Texto de ejemplo para aprovechar y decir que el mejor pokemon es el Esmeralda</div>
-        </footer>
+       <Footer />
       </body>
     </html>
   );
