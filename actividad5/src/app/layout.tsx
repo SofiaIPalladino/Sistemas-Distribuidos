@@ -1,4 +1,5 @@
 import "./globals.css";
+import Footer from "./components/Footer";
 
 export const metadata = {
   title: "Pokedex - Simple",
@@ -16,6 +17,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         <main className="container">{children}</main>
+
+        <Footer />
       </body>
     </html>
   );
