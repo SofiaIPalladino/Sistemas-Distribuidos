@@ -1,8 +1,8 @@
 :root{
-  /* Paleta basada en la actividad6 (coral/acento) */
+  
   --bg:#f3f6f9;
   --container-bg:#ffffff;
-  --accent:#ef5350; /* coral */
+  --accent:#ef5350; 
   --muted:#6b7280;
   --card:#ffffff;
   --card-border:#eef2f7;
@@ -11,7 +11,6 @@
   --title-color:#0f172a;
 }
 
-/* Reset / base */
 *{box-sizing:border-box}
 html,body,#__next{height:100%}
 body{
@@ -23,7 +22,6 @@ body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* Contenedor central tipo tarjeta (estética actividad6) */
 .container{
   max-width:1000px;
   margin:20px auto;
@@ -34,7 +32,6 @@ body{
   border: 1px solid var(--card-border);
 }
 
-/* Header */
 .header{
   background:transparent;
   padding:12px 0 0 0;
@@ -47,7 +44,6 @@ body{
   font-size:1.15rem;
 }
 
-/* Título de sección */
 .page-title{
   font-size:1rem;
   font-weight:700;
@@ -55,7 +51,6 @@ body{
   color:#0b1220;
 }
 
-/* Grid responsive con varias cards por fila */
 .pokemon-grid{
   display:grid;
   gap:18px;
@@ -63,7 +58,6 @@ body{
   margin-top:8px;
 }
 
-/* Card */
 .pokemon-card{
   background: var(--card);
   border-radius: 10px;
