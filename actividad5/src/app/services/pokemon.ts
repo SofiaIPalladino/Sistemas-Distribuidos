@@ -15,8 +15,8 @@ export type PokemonStat = {
 
 export type PokemonDetail = {
   name: string;
-  height: number; // decimeters
-  weight: number; // hectograms
+  height: number;
+  weight: number;
   sprites?: PokemonSprites;
   types?: PokemonType[];
   abilities?: PokemonAbility[];
@@ -36,7 +36,6 @@ export async function getPokemonList(limit = 30, offset = 0): Promise<PokemonLis
   return (data.results ?? []) as PokemonListItem[];
 }
 
-/* Si quieres usar axios aquí, lo puedes hacer; con fetch también funciona. */
 import axios from "axios";
 
 export async function getPokemonByName(name: string): Promise<PokemonDetail> {
