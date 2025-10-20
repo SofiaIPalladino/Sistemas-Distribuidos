@@ -87,10 +87,8 @@ export default async function Page({ params }: { params: Params }) {
           </div>
         </section>
 
-        <section style={{ marginTop: 20 }}>
-          {/* Mostrar stats con animación en cliente — mismo contenido que antes */}
+        <section style={{ marginTop: 20 }}> 
           <h2 style={{ marginBottom: 8 }}>Stats</h2>
-          {/* Componente cliente que anima las barras y muestra valores numéricos */}
           <PokemonStats stats={(pokemon.stats ?? []) as PokemonStat[]} />
         </section>
       </main>
