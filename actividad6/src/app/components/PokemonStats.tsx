@@ -18,36 +18,32 @@ function prettyStatName(statName: string) {
 }
 
 export default function PokemonStats({ stats }: Props) {
-  const [animated, setAnimated] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setAnimated(true), 60);
+    // anima tras hidratación
+    const t = setTimeout(() => setAnimate(true), 50);
     return () => clearTimeout(t);
   }, []);
 
   if (!stats || stats.length === 0) {
-    return (
-      <div className="pokemon-block">
-        <h3 className="pokemon-block-title">Stats</h3>
-        <p>No hay stats disponibles.</p>
-      </div>
-    );
+    return <p>No hay stats disponibles.</p>;
   }
 
   const BAR_MAX = 255;
 
   return (
-    <div className="pokemon-block" aria-label="Stats del Pokémon">
-      <h3 className="pokemon-block-title">Stats</h3>
+    <div className="pokemon-block">
+      <h2 className="pokemon-block-title">Stats</h2>
 
-      <ul className="pokemon-stats">
+      <div className="pokemon-stats" aria-live="polite">
         {stats.map((s) => {
           const nameLabel = prettyStatName(s.stat.name);
           const value = s.base_stat;
           const pct = Math.min(100, Math.round((value / BAR_MAX) * 100));
 
           return (
-            <li key={s.stat.name} className="pokemon-stat-row">
+            <div className="pokemon-stat" key={s.stat.name}>
               <div className="pokemon-stat-name">{nameLabel}</div>
 
               <div className="pokemon-bar-wrap" aria-hidden>
@@ -58,15 +54,15 @@ export default function PokemonStats({ stats }: Props) {
                   aria-valuemin={0}
                   aria-valuemax={BAR_MAX}
                   aria-label={`${nameLabel} ${value}`}
-                  style={{ width: animated ? `${pct}%` : "6px" }}
+                  style={{ width: animate ? `${pct}%` : "6px" }}
                 />
               </div>
 
               <div className="pokemon-stat-val">{value}</div>
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

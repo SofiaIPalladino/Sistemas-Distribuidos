@@ -1,5 +1,4 @@
 export default function Footer() {
-  const year = new Date().getFullYear();
   return (
     <footer className="footer" role="contentinfo" aria-label="Pie de página">
       <div className="container">

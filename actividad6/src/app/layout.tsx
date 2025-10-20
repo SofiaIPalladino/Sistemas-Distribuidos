@@ -1,27 +1,30 @@
 import "./globals.css";
-import QueryProvider from "./QueryProvider";
+import Link from "next/link";
+import type { Metadata } from "next";
+import ReactQueryProvider from "./QueryProvider";
 import Footer from "./components/Footer";
 
-export const metadata = {
-  title: "Pokedex - Simple",
-  description: "Listado simple de Pokémon",
+export const metadata: Metadata = {
+  title: "Pokémon",
+  description: "Listado y detalle de Pokémon",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <body>
-        <header className="header">
+        <ReactQueryProvider>
+          {/* Header integrado directamente en el layout (no componente aparte) */}
+           <header className="header">
           <div className="container">
             <h1 className="title">Poke·dex</h1>
           </div>
         </header>
 
-        <QueryProvider>
-          <main className="container">{children}</main>
-        </QueryProvider>
+          <main>{children}</main>
 
-       <Footer />
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );
