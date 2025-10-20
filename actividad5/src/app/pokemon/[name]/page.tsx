@@ -1,85 +1,83 @@
-import { notFound } from "next/navigation";
+import React from "react";
 import Link from "next/link";
+import { getPokemonByName, type PokemonDetail, type PokemonAbility, type PokemonStat } from "../../services/pokemon";
+import { notFound } from "next/navigation";
+import PokemonStats from "../../components/PokemonStats";
 
 type Params = { name: string };
 
-type PokemonType = {
-  type: { name: string };
-};
-
-type PokemonAbility = {
-  ability: { name: string };
-  is_hidden: boolean;
-};
-
-type PokemonSprites = {
-  front_default?: string | null;
-};
-
-type PokemonDetail = {
-  name: string;
-  height: number;
-  weight: number;
-  sprites?: PokemonSprites;
-  types?: PokemonType[];
-  abilities?: PokemonAbility[];
-};
-
-async function fetchPokemon(name: string): Promise<PokemonDetail> {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(name)}`);
-  if (!res.ok) {
-    const err: any = new Error("Fetch error");
-    err.status = res.status;
-    throw err;
+function prettyStatName(statName: string) {
+  switch (statName) {
+    case "hp": return "HP";
+    case "attack": return "Attack";
+    case "defense": return "Defense";
+    case "special-attack": return "Sp. Atk";
+    case "special-defense": return "Sp. Def";
+    case "speed": return "Speed";
+    default: return statName;
   }
-  return res.json();
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const name = String(params.name).toLowerCase();
+  const name = String(params.name ?? "").toLowerCase();
 
   try {
-    const pokemon = await fetchPokemon(name);
+    const pokemon = (await getPokemonByName(name)) as PokemonDetail;
     const sprite = pokemon.sprites?.front_default ?? null;
     const types: string[] = (pokemon.types ?? []).map((t) => t.type.name);
 
-    return (
-      <section>
-        <Link href="/" style={{ display: "inline-block", marginBottom: 12 }}>
-          ← Volver
-        </Link>
+    const heightMeters = (pokemon.height ?? 0) / 10;
+    const weightKg = (pokemon.weight ?? 0) / 10;
 
-        <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
+    return (
+      <main style={{ padding: 20 }}>
+        <Link href="/" className="back-link">← Volver</Link>
+
+        <section style={{ display: "flex", gap: 18, alignItems: "flex-start", marginTop: 12 }}>
           <div>
             {sprite ? (
               <img src={sprite} alt={pokemon.name} width={160} height={160} />
             ) : (
-              <div style={{ width: 160, height: 160, background: "#f3f4f6" }} />
+              <div style={{ width: 160, height: 160, background: "#f3f4f6", borderRadius: 8 }} />
             )}
           </div>
 
-          <div>
-            <h1 style={{ textTransform: "capitalize" }}>{pokemon.name}</h1>
-            <p>
-              Altura: {pokemon.height} — Peso: {pokemon.weight}
+          <div style={{ flex: 1 }}>
+            <h1 style={{ textTransform: "capitalize", marginBottom: 6 }}>{pokemon.name}</h1>
+
+            <p style={{ margin: "4px 0", color: "#444" }}>
+              Altura: {heightMeters.toFixed(1)} m · Peso: {weightKg.toFixed(1)} kg
             </p>
-            <p>
-              Tipos:{" "}
+
+            <p style={{ margin: "8px 0" }}>
+              <strong>Tipos:</strong>{" "}
               {types.length > 0
                 ? types.map((t, i) => (
-                    <span key={`${t}-${i}`} style={{ marginRight: 8, textTransform: "capitalize" }}>
+                    <span
+                      key={`${t}-${i}`}
+                      style={{
+                        marginRight: 8,
+                        textTransform: "capitalize",
+                        padding: "2px 8px",
+                        borderRadius: 12,
+                        background: "#eee",
+                      }}
+                    >
                       {t}
                     </span>
                   ))
                 : "—"}
             </p>
 
-            {pokemon.abilities && pokemon.abilities.length > 0 && (
+            {(pokemon.abilities && pokemon.abilities.length > 0) && (
               <div style={{ marginTop: 8 }}>
                 <strong>Habilidades:</strong>
                 <ul>
-                  {pokemon.abilities.map((a) => (
-                    <li key={a.ability.name} style={{ textTransform: "capitalize" }}>
+                  {(pokemon.abilities ?? []).map((a: PokemonAbility) => (
+                    <li
+                      key={`${a.ability.name}-${a.is_hidden ? "hidden" : "visible"}`}
+                      style={{ textTransform: "capitalize" }}
+                    >
                       {a.ability.name} {a.is_hidden ? "(oculta)" : ""}
                     </li>
                   ))}
@@ -87,21 +85,25 @@ export default async function Page({ params }: { params: Params }) {
               </div>
             )}
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section style={{ marginTop: 20 }}>
+          {/* Mostrar stats con animación en cliente — mismo contenido que antes */}
+          <h2 style={{ marginBottom: 8 }}>Stats</h2>
+          {/* Componente cliente que anima las barras y muestra valores numéricos */}
+          <PokemonStats stats={(pokemon.stats ?? []) as PokemonStat[]} />
+        </section>
+      </main>
     );
   } catch (err: any) {
     const status = err?.status ?? err?.response?.status;
     if (status === 404) notFound();
-
     return (
-      <section>
-        <Link href="/" style={{ display: "inline-block", marginBottom: 12 }}>
-          ← Volver
-        </Link>
+      <main style={{ padding: 20 }}>
+        <Link href="/" className="back-link">← Volver</Link>
         <h2>No se encontró el Pokémon: {name}</h2>
         <p>HTTP: {status ?? "desconocido"}</p>
-      </section>
+      </main>
     );
   }
 }

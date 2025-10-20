@@ -146,3 +146,54 @@ body{
   .pokemon-img{ width:64px; height:64px; }
   .pokemon-grid{ gap:12px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 }
+
+/* Reemplaza / añade estas reglas en tu globals.css para que las barras tengan la misma estética */
+
+/* Bloque de stats */
+.pokemon-block { margin-top: 12px; }
+.pokemon-block-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 8px 0; }
+
+.pokemon-stats { list-style: none; padding: 0; margin: 0; max-width: 680px; }
+
+/* Filas: espaciamiento y separación iguales al ejemplo */
+.pokemon-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.pokemon-stat-row:last-child { margin-bottom: 0; }
+
+/* Nombre del stat: ancho fijo como en tu ejemplo (110px) */
+.pokemon-stat-name {
+  flex: 0 0 110px;
+  font-weight: 600;
+  color: var(--title-color, #0f172a);
+  text-transform: capitalize;
+  font-size: .95rem;
+}
+
+/* Contenedor de la barra: altura 12px, radio 8px, fondo claro */
+.pokemon-bar-wrap {
+  flex: 1;
+  background: #e6e7ea; /* coincide con tu inline style anterior */
+  border-radius: 8px;
+  height: 12px; /* altura igual al ejemplo */
+  overflow: hidden;
+}
+
+/* Barra interior: degradado verde, transición .6s */
+.pokemon-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #26a69a, #00695c); /* igual que en tu ejemplo */
+  border-radius: 8px;
+  transition: width .6s ease;
+  min-width: 6px;
+}
+
+/* Valor numérico a la derecha */
+.pokemon-stat-val {
+  flex: 0 0 48px;
+  text-align: right;
+  font-weight: 700;
+}
